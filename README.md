@@ -12,7 +12,9 @@ Use Claude Code CLI, VS Code, JetBrains ACP, or chat bots through your own Anthr
 [![Code style: Ruff](https://img.shields.io/badge/code%20formatting-ruff-f5a623.svg?style=for-the-badge)](https://github.com/astral-sh/ruff)
 [![Logging: Loguru](https://img.shields.io/badge/logging-loguru-4ecdc4.svg?style=for-the-badge)](https://github.com/Delgan/loguru)
 
-Free Claude Code routes Anthropic Messages API traffic from Claude Code to NVIDIA NIM, OpenRouter, DeepSeek, LM Studio, llama.cpp, or Ollama. It keeps Claude Code's client-side protocol stable while letting you choose free, paid, or local models.
+Free Claude Code routes Anthropic Messages API traffic from Claude Code to NVIDIA NIM, OpenRouter, DeepSeek, MiniMax, LM Studio, llama.cpp, or Ollama. It keeps Claude Code's client-side protocol stable while letting you choose free, paid, or local models.
+
+[English](README.md) · [中文](README.zh-CN.md)
 
 [Quick Start](#quick-start) · [Providers](#choose-a-provider) · [Clients](#connect-claude-code) · [Troubleshooting](#troubleshooting) · [Development](#development)
 
@@ -25,7 +27,7 @@ Free Claude Code routes Anthropic Messages API traffic from Claude Code to NVIDI
 ## What You Get
 
 - Drop-in proxy for Claude Code's Anthropic API calls.
-- Six provider backends: NVIDIA NIM, OpenRouter, DeepSeek, LM Studio, llama.cpp, and Ollama.
+- Seven provider backends: NVIDIA NIM, OpenRouter, DeepSeek, MiniMax, LM Studio, llama.cpp, and Ollama.
 - Per-model routing: send Opus, Sonnet, Haiku, and fallback traffic to different providers.
 - Streaming, tool use, reasoning/thinking block handling, and local request optimizations.
 - Optional Discord or Telegram bot wrapper for remote coding sessions.
@@ -124,6 +126,7 @@ provider_id/model/name
 | NVIDIA NIM | `nvidia_nim/...` | OpenAI chat translation | `NVIDIA_NIM_API_KEY` | `https://integrate.api.nvidia.com/v1` |
 | OpenRouter | `open_router/...` | Anthropic Messages | `OPENROUTER_API_KEY` | `https://openrouter.ai/api/v1` |
 | DeepSeek | `deepseek/...` | Anthropic Messages | `DEEPSEEK_API_KEY` | `https://api.deepseek.com/anthropic` |
+| MiniMax | `minimax/...` | OpenAI-compatible chat | `MINIMAX_API_KEY` | `https://api.minimax.chat/v1` |
 | LM Studio | `lmstudio/...` | Anthropic Messages | none | `http://localhost:1234/v1` |
 | llama.cpp | `llamacpp/...` | Anthropic Messages | none | `http://localhost:8080/v1` |
 | Ollama | `ollama/...` | Anthropic Messages | none | `http://localhost:11434` |
@@ -174,6 +177,21 @@ MODEL="deepseek/deepseek-chat"
 ```
 
 This provider uses DeepSeek's Anthropic-compatible endpoint, not the OpenAI chat-completions endpoint.
+
+</details>
+
+<details>
+<summary><b>MiniMax</b></summary>
+
+Get an API key in MiniMax Open Platform, then configure:
+
+```dotenv
+MINIMAX_API_KEY="your-minimax-key"
+MINIMAX_BASE_URL="https://api.minimax.chat/v1"
+MODEL="minimax/MiniMax-M1"
+```
+
+This provider uses MiniMax's OpenAI-compatible endpoint through the shared OpenAI chat transport.
 
 </details>
 
@@ -378,6 +396,8 @@ Blank per-tier values inherit the fallback. Blank thinking overrides inherit `EN
 NVIDIA_NIM_API_KEY=""
 OPENROUTER_API_KEY=""
 DEEPSEEK_API_KEY=""
+MINIMAX_API_KEY=""
+MINIMAX_BASE_URL="https://api.minimax.chat/v1"
 LM_STUDIO_BASE_URL="http://localhost:1234/v1"
 LLAMACPP_BASE_URL="http://localhost:8080/v1"
 OLLAMA_BASE_URL="http://localhost:11434"
@@ -388,6 +408,7 @@ Proxy settings are per provider:
 ```dotenv
 NVIDIA_NIM_PROXY=""
 OPENROUTER_PROXY=""
+MINIMAX_PROXY=""
 LMSTUDIO_PROXY=""
 LLAMACPP_PROXY=""
 ```

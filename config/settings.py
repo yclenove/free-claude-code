@@ -101,6 +101,13 @@ class Settings(BaseSettings):
     # ==================== DeepSeek Config ====================
     deepseek_api_key: str = Field(default="", validation_alias="DEEPSEEK_API_KEY")
 
+    # ==================== MiniMax Config ====================
+    minimax_api_key: str = Field(default="", validation_alias="MINIMAX_API_KEY")
+    minimax_base_url: str = Field(
+        default="https://api.minimax.chat/v1",
+        validation_alias="MINIMAX_BASE_URL",
+    )
+
     # ==================== Messaging Platform Selection ====================
     # Valid: "telegram" | "discord" | "none"
     messaging_platform: str = Field(
@@ -148,6 +155,7 @@ class Settings(BaseSettings):
     # ==================== Per-Provider Proxy ====================
     nvidia_nim_proxy: str = Field(default="", validation_alias="NVIDIA_NIM_PROXY")
     open_router_proxy: str = Field(default="", validation_alias="OPENROUTER_PROXY")
+    minimax_proxy: str = Field(default="", validation_alias="MINIMAX_PROXY")
     lmstudio_proxy: str = Field(default="", validation_alias="LMSTUDIO_PROXY")
     llamacpp_proxy: str = Field(default="", validation_alias="LLAMACPP_PROXY")
 

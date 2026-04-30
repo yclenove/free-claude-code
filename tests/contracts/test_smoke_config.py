@@ -20,6 +20,8 @@ def _settings(**overrides):
         "nvidia_nim_api_key": "",
         "open_router_api_key": "",
         "deepseek_api_key": "",
+        "minimax_api_key": "",
+        "minimax_base_url": "https://api.minimax.chat/v1",
         "lm_studio_base_url": "",
         "llamacpp_base_url": "",
         "ollama_base_url": "http://localhost:11434",

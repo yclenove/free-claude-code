@@ -41,6 +41,7 @@ PROVIDER_SMOKE_DEFAULT_MODELS: dict[str, str] = {
     "nvidia_nim": "nvidia_nim/z-ai/glm4.7",
     "open_router": "open_router/stepfun/step-3.5-flash:free",
     "deepseek": "deepseek/deepseek-v4-pro",
+    "minimax": "minimax/MiniMax-M1",
     "lmstudio": "lmstudio/local-model",
     "llamacpp": "llamacpp/local-model",
     "ollama": "ollama/llama3.1",
@@ -179,6 +180,8 @@ class SmokeConfig:
             return bool(self.settings.open_router_api_key.strip())
         if provider == "deepseek":
             return bool(self.settings.deepseek_api_key.strip())
+        if provider == "minimax":
+            return bool(self.settings.minimax_api_key.strip())
         if provider == "lmstudio":
             return bool(self.settings.lm_studio_base_url.strip())
         if provider == "llamacpp":

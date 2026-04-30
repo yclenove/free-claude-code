@@ -507,6 +507,7 @@ class TestPerModelMapping:
                 "open_router/anthropic/claude-3-haiku",
             ),
             ({"MODEL": "deepseek/deepseek-chat"}, "deepseek/deepseek-chat", None),
+            ({"MODEL": "minimax/MiniMax-M1"}, "minimax/MiniMax-M1", None),
             ({"MODEL": "lmstudio/qwen2.5-7b"}, "lmstudio/qwen2.5-7b", None),
             ({"MODEL": "llamacpp/local-model"}, "llamacpp/local-model", None),
             ({"MODEL": "ollama/llama3.1"}, "ollama/llama3.1", None),
@@ -644,6 +645,7 @@ class TestPerModelMapping:
         assert Settings.parse_provider_type("nvidia_nim/meta/llama") == "nvidia_nim"
         assert Settings.parse_provider_type("open_router/deepseek/r1") == "open_router"
         assert Settings.parse_provider_type("deepseek/deepseek-chat") == "deepseek"
+        assert Settings.parse_provider_type("minimax/MiniMax-M1") == "minimax"
         assert Settings.parse_provider_type("lmstudio/qwen") == "lmstudio"
         assert Settings.parse_provider_type("llamacpp/model") == "llamacpp"
         assert Settings.parse_provider_type("ollama/llama3.1") == "ollama"
@@ -654,6 +656,7 @@ class TestPerModelMapping:
 
         assert Settings.parse_model_name("nvidia_nim/meta/llama") == "meta/llama"
         assert Settings.parse_model_name("deepseek/deepseek-chat") == "deepseek-chat"
+        assert Settings.parse_model_name("minimax/MiniMax-M1") == "MiniMax-M1"
         assert Settings.parse_model_name("lmstudio/qwen") == "qwen"
         assert Settings.parse_model_name("llamacpp/model") == "model"
         assert Settings.parse_model_name("ollama/llama3.1") == "llama3.1"

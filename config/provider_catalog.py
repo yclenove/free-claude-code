@@ -21,6 +21,7 @@ OPENROUTER_DEFAULT_BASE = "https://openrouter.ai/api/v1"
 LMSTUDIO_DEFAULT_BASE = "http://localhost:1234/v1"
 LLAMACPP_DEFAULT_BASE = "http://localhost:8080/v1"
 OLLAMA_DEFAULT_BASE = "http://localhost:11434"
+MINIMAX_DEFAULT_BASE = "https://api.minimax.chat/v1"
 
 
 @dataclass(frozen=True, slots=True)
@@ -101,6 +102,17 @@ PROVIDER_CATALOG: dict[str, ProviderDescriptor] = {
             "native_anthropic",
             "local",
         ),
+    ),
+    "minimax": ProviderDescriptor(
+        provider_id="minimax",
+        transport_type="openai_chat",
+        credential_env="MINIMAX_API_KEY",
+        credential_url="https://www.minimax.io/platform/user-center/basic-information/interface-key",
+        credential_attr="minimax_api_key",
+        default_base_url=MINIMAX_DEFAULT_BASE,
+        base_url_attr="minimax_base_url",
+        proxy_attr="minimax_proxy",
+        capabilities=("chat", "streaming", "tools", "thinking", "rate_limit"),
     ),
 }
 
