@@ -8,6 +8,7 @@ from config.nim import NimSettings
 from config.provider_ids import SUPPORTED_PROVIDER_IDS
 from providers.deepseek import DeepSeekProvider
 from providers.kimi import KimiProvider
+from providers.xiaomimimo import XiaomiMiMoProvider
 from providers.exceptions import UnknownProviderTypeError
 from providers.llamacpp import LlamaCppProvider
 from providers.lmstudio import LMStudioProvider
@@ -30,6 +31,8 @@ def _make_settings(**overrides):
     mock.open_router_api_key = "test_openrouter_key"
     mock.deepseek_api_key = "test_deepseek_key"
     mock.kimi_api_key = "test_kimi_key"
+    mock.xiaomi_mimo_api_key = "test_xiaomi_mimo_key"
+    mock.xiaomi_mimo_base_url = "https://token-plan-cn.xiaomimimo.com/v1"
     mock.minimax_api_key = "test_minimax_key"
     mock.minimax_base_url = "https://api.minimax.chat/v1"
     mock.lm_studio_base_url = "http://localhost:1234/v1"
@@ -38,6 +41,7 @@ def _make_settings(**overrides):
     mock.nvidia_nim_proxy = ""
     mock.open_router_proxy = ""
     mock.kimi_proxy = ""
+    mock.xiaomi_mimo_proxy = ""
     mock.minimax_proxy = ""
     mock.lmstudio_proxy = ""
     mock.llamacpp_proxy = ""
@@ -100,6 +104,7 @@ def test_create_provider_instantiates_each_builtin():
         "deepseek": DeepSeekProvider,
         "kimi": KimiProvider,
         "minimax": MiniMaxProvider,
+        "xiaomimimo": XiaomiMiMoProvider,
         "lmstudio": LMStudioProvider,
         "llamacpp": LlamaCppProvider,
         "ollama": OllamaProvider,

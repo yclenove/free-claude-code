@@ -104,7 +104,14 @@ class AppRuntime:
         self.app.state.provider_registry = self._provider_registry
         try:
             warn_if_process_auth_token(self.settings)
-            await self._provider_registry.validate_configured_models(self.settings)
+            skip_validation = self.settings.fcc_skip_startup_model_validation
+            if skip_validation:
+                logger.warning(
+                    "Skipping configured model validation (FCC_SKIP_STARTUP_MODEL_VALIDATION); "
+                    "fix provider credentials and remove this for production."
+                )
+            else:
+                await self._provider_registry.validate_configured_models(self.settings)
             self._provider_registry.start_model_list_refresh(self.settings)
             await self._start_messaging_if_configured()
             self._publish_state()

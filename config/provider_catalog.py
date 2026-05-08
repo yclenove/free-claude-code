@@ -23,6 +23,9 @@ LMSTUDIO_DEFAULT_BASE = "http://localhost:1234/v1"
 LLAMACPP_DEFAULT_BASE = "http://localhost:8080/v1"
 OLLAMA_DEFAULT_BASE = "http://localhost:11434"
 MINIMAX_DEFAULT_BASE = "https://api.minimax.chat/v1"
+# OpenAI-compatible chat base. Token / Coding Plan (CN) uses token-plan-cn; pay-as-you-go
+# platform may use https://api.xiaomimimo.com/v1 — override with XIAOMI_MIMO_BASE_URL if needed.
+XIAOMI_MIMO_DEFAULT_BASE = "https://token-plan-cn.xiaomimimo.com/v1"
 
 
 @dataclass(frozen=True, slots=True)
@@ -124,6 +127,17 @@ PROVIDER_CATALOG: dict[str, ProviderDescriptor] = {
         base_url_attr="minimax_base_url",
         proxy_attr="minimax_proxy",
         capabilities=("chat", "streaming", "tools", "thinking", "rate_limit"),
+    ),
+    "xiaomimimo": ProviderDescriptor(
+        provider_id="xiaomimimo",
+        transport_type="openai_chat",
+        credential_env="XIAOMI_MIMO_API_KEY",
+        credential_url="https://platform.xiaomimimo.com/",
+        credential_attr="xiaomi_mimo_api_key",
+        default_base_url=XIAOMI_MIMO_DEFAULT_BASE,
+        base_url_attr="xiaomi_mimo_base_url",
+        proxy_attr="xiaomi_mimo_proxy",
+        capabilities=("chat", "streaming", "tools"),
     ),
 }
 

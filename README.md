@@ -12,7 +12,7 @@ Use Claude Code CLI, VS Code, JetBrains ACP, or chat bots through your own Anthr
 [![Code style: Ruff](https://img.shields.io/badge/code%20formatting-ruff-f5a623.svg?style=for-the-badge)](https://github.com/astral-sh/ruff)
 [![Logging: Loguru](https://img.shields.io/badge/logging-loguru-4ecdc4.svg?style=for-the-badge)](https://github.com/Delgan/loguru)
 
-Free Claude Code routes Anthropic Messages API traffic from Claude Code to NVIDIA NIM, Kimi, OpenRouter, DeepSeek, MiniMax, LM Studio, llama.cpp, or Ollama. It keeps Claude Code's client-side protocol stable while letting you choose free, paid, or local models.
+Free Claude Code routes Anthropic Messages API traffic from Claude Code to NVIDIA NIM, Kimi, OpenRouter, DeepSeek, MiniMax, Xiaomi MiMo, LM Studio, llama.cpp, or Ollama. It keeps Claude Code's client-side protocol stable while letting you choose free, paid, or local models.
 
 [English](README.md) · [中文](README.zh-CN.md)
 
@@ -39,7 +39,7 @@ Free Claude Code routes Anthropic Messages API traffic from Claude Code to NVIDI
 ## What You Get
 
 - Drop-in proxy for Claude Code's Anthropic API calls.
-- Eight provider backends: NVIDIA NIM, Kimi, OpenRouter, DeepSeek, MiniMax, LM Studio, llama.cpp, and Ollama.
+- Nine provider backends: NVIDIA NIM, Kimi, OpenRouter, DeepSeek, MiniMax, Xiaomi MiMo, LM Studio, llama.cpp, and Ollama.
 - Per-model routing: send Opus, Sonnet, Haiku, and fallback traffic to different providers.
 - Native Claude Code `/model` picker support through the proxy's `/v1/models` endpoint (Claude Code must opt in to Gateway model discovery; see [Model Picker](#model-picker)).
 - Streaming, tool use, reasoning/thinking block handling, and local request optimizations.
@@ -135,6 +135,7 @@ provider_id/model/name
 | <img src="https://cdn.simpleicons.org/openrouter/6C47FF" alt="" width="18" height="18"> OpenRouter | `open_router/...` | Anthropic Messages | `OPENROUTER_API_KEY` | `https://openrouter.ai/api/v1` |
 | <img src="https://cdn.simpleicons.org/deepseek/4D6BFF" alt="" width="18" height="18"> DeepSeek | `deepseek/...` | Anthropic Messages | `DEEPSEEK_API_KEY` | `https://api.deepseek.com/anthropic` |
 | MiniMax | `minimax/...` | OpenAI-compatible chat | `MINIMAX_API_KEY` | `https://api.minimax.chat/v1` |
+| Xiaomi MiMo | `xiaomimimo/...` | OpenAI-compatible chat | `XIAOMI_MIMO_API_KEY` | `https://token-plan-cn.xiaomimimo.com/v1` (Token/Coding Plan CN); `https://api.xiaomimimo.com/v1` for other plans |
 | <img src="https://github.com/lmstudio-ai.png?size=64" alt="" width="18" height="18"> LM Studio | `lmstudio/...` | Anthropic Messages | none | `http://localhost:1234/v1` |
 | <img src="https://github.com/ggml-org.png?size=64" alt="" width="18" height="18"> llama.cpp | `llamacpp/...` | Anthropic Messages | none | `http://localhost:8080/v1` |
 | <img src="https://github.com/ollama.png?size=64" alt="" width="18" height="18"> Ollama | `ollama/...` | Anthropic Messages | none | `http://localhost:11434` |
@@ -201,6 +202,28 @@ MODEL="minimax/MiniMax-M1"
 ```
 
 This provider uses MiniMax's OpenAI-compatible endpoint through the shared OpenAI chat transport.
+
+</details>
+
+<details>
+<summary><b>Xiaomi MiMo</b></summary>
+
+See [Xiaomi MiMo platform](https://platform.xiaomimimo.com/) for API keys. Configure `MODEL` as `xiaomimimo/<model_id>`; the segment after `xiaomimimo/` is sent to MiMo as the OpenAI `model` field.
+
+**Base URLs:** Token / Coding Plan (China) OpenAI-compatible API: `https://token-plan-cn.xiaomimimo.com/v1`. The same host also exposes an Anthropic-compatible root at `https://token-plan-cn.xiaomimimo.com/anthropic`; this proxy’s `xiaomimimo` provider uses the **OpenAI** path only—set `XIAOMI_MIMO_BASE_URL` to the `/v1` URL. Other billing plans may use `https://api.xiaomimimo.com/v1` instead.
+
+Official `model` IDs (per Xiaomi MiMo API):
+
+- `mimo-v2.5-pro`, `mimo-v2.5`, `mimo-v2.5-tts`, `mimo-v2.5-tts-voicedesign`, `mimo-v2.5-tts-voiceclone`
+- `mimo-v2-pro`, `mimo-v2-omni`, `mimo-v2-tts`, `mimo-v2-flash`
+
+```dotenv
+XIAOMI_MIMO_API_KEY="your-mimo-key"
+XIAOMI_MIMO_BASE_URL="https://token-plan-cn.xiaomimimo.com/v1"
+MODEL="xiaomimimo/mimo-v2.5"
+```
+
+OpenAI-compatible `/v1/chat/completions` endpoint via the shared OpenAI chat transport. TTS-related model IDs are listed for API parity; typical Claude Code chat uses the non-`tts` text models unless you route tool flows to them explicitly.
 
 </details>
 

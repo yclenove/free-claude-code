@@ -122,6 +122,13 @@ class Settings(BaseSettings):
     # ==================== Kimi Config ====================
     kimi_api_key: str = Field(default="", validation_alias="KIMI_API_KEY")
 
+    # ==================== Xiaomi MiMo Config ====================
+    xiaomi_mimo_api_key: str = Field(default="", validation_alias="XIAOMI_MIMO_API_KEY")
+    xiaomi_mimo_base_url: str = Field(
+        default="https://token-plan-cn.xiaomimimo.com/v1",
+        validation_alias="XIAOMI_MIMO_BASE_URL",
+    )
+
     # ==================== Messaging Platform Selection ====================
     # Valid: "telegram" | "discord" | "none"
     messaging_platform: str = Field(
@@ -173,6 +180,7 @@ class Settings(BaseSettings):
     lmstudio_proxy: str = Field(default="", validation_alias="LMSTUDIO_PROXY")
     llamacpp_proxy: str = Field(default="", validation_alias="LLAMACPP_PROXY")
     kimi_proxy: str = Field(default="", validation_alias="KIMI_PROXY")
+    xiaomi_mimo_proxy: str = Field(default="", validation_alias="XIAOMI_MIMO_PROXY")
 
     # ==================== Provider Rate Limiting ====================
     provider_rate_limit: int = Field(default=40, validation_alias="PROVIDER_RATE_LIMIT")
@@ -296,6 +304,11 @@ class Settings(BaseSettings):
     )
 
     # ==================== Server ====================
+    # Skip startup upstream model-list checks (e.g. credentials not ready); prefer fixing keys.
+    fcc_skip_startup_model_validation: bool = Field(
+        default=False,
+        validation_alias="FCC_SKIP_STARTUP_MODEL_VALIDATION",
+    )
     host: str = "0.0.0.0"
     port: int = 8082
     log_file: str = "server.log"
@@ -348,6 +361,17 @@ class Settings(BaseSettings):
                 f"whisper_device must be 'cpu', 'cuda', or 'nvidia_nim', got {v!r}"
             )
         return v
+
+    @field_validator("fcc_skip_startup_model_validation", mode="before")
+    @classmethod
+    def coerce_fcc_skip_startup_model_validation(cls, v: Any) -> bool:
+        if isinstance(v, bool):
+            return v
+        if isinstance(v, str):
+            return v.strip().lower() in ("1", "true", "yes", "on")
+        if isinstance(v, int):
+            return v != 0
+        return False
 
     @field_validator("messaging_platform")
     @classmethod

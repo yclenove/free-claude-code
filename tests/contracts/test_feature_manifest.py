@@ -7,6 +7,7 @@ from messaging.platforms.factory import create_messaging_platform
 from providers.base import BaseProvider
 from providers.deepseek import DeepSeekProvider
 from providers.kimi import KimiProvider
+from providers.xiaomimimo import XiaomiMiMoProvider
 from providers.llamacpp import LlamaCppProvider
 from providers.lmstudio import LMStudioProvider
 from providers.minimax import MiniMaxProvider
@@ -74,6 +75,7 @@ def test_provider_and_platform_registries_include_advertised_builtins() -> None:
         "deepseek": DeepSeekProvider,
         "kimi": KimiProvider,
         "minimax": MiniMaxProvider,
+        "xiaomimimo": XiaomiMiMoProvider,
         "lmstudio": LMStudioProvider,
         "llamacpp": LlamaCppProvider,
         "ollama": OllamaProvider,

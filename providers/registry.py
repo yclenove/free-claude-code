@@ -80,6 +80,12 @@ def _create_minimax(config: ProviderConfig, _settings: Settings) -> BaseProvider
     return MiniMaxProvider(config)
 
 
+def _create_xiaomimimo(config: ProviderConfig, _settings: Settings) -> BaseProvider:
+    from providers.xiaomimimo import XiaomiMiMoProvider
+
+    return XiaomiMiMoProvider(config)
+
+
 PROVIDER_FACTORIES: dict[str, ProviderFactory] = {
     "nvidia_nim": _create_nvidia_nim,
     "open_router": _create_open_router,
@@ -89,6 +95,7 @@ PROVIDER_FACTORIES: dict[str, ProviderFactory] = {
     "ollama": _create_ollama,
     "kimi": _create_kimi,
     "minimax": _create_minimax,
+    "xiaomimimo": _create_xiaomimimo,
 }
 
 if set(PROVIDER_DESCRIPTORS) != set(SUPPORTED_PROVIDER_IDS) or set(
