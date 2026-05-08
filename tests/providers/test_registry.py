@@ -7,6 +7,7 @@ import pytest
 from config.nim import NimSettings
 from config.provider_ids import SUPPORTED_PROVIDER_IDS
 from providers.deepseek import DeepSeekProvider
+from providers.kimi import KimiProvider
 from providers.exceptions import UnknownProviderTypeError
 from providers.llamacpp import LlamaCppProvider
 from providers.lmstudio import LMStudioProvider
@@ -28,6 +29,7 @@ def _make_settings(**overrides):
     mock.nvidia_nim_api_key = "test_key"
     mock.open_router_api_key = "test_openrouter_key"
     mock.deepseek_api_key = "test_deepseek_key"
+    mock.kimi_api_key = "test_kimi_key"
     mock.minimax_api_key = "test_minimax_key"
     mock.minimax_base_url = "https://api.minimax.chat/v1"
     mock.lm_studio_base_url = "http://localhost:1234/v1"
@@ -35,6 +37,7 @@ def _make_settings(**overrides):
     mock.ollama_base_url = "http://localhost:11434"
     mock.nvidia_nim_proxy = ""
     mock.open_router_proxy = ""
+    mock.kimi_proxy = ""
     mock.minimax_proxy = ""
     mock.lmstudio_proxy = ""
     mock.llamacpp_proxy = ""
@@ -95,6 +98,7 @@ def test_create_provider_instantiates_each_builtin():
     cases = {
         "nvidia_nim": NvidiaNimProvider,
         "deepseek": DeepSeekProvider,
+        "kimi": KimiProvider,
         "minimax": MiniMaxProvider,
         "lmstudio": LMStudioProvider,
         "llamacpp": LlamaCppProvider,

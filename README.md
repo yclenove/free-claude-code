@@ -12,7 +12,7 @@ Use Claude Code CLI, VS Code, JetBrains ACP, or chat bots through your own Anthr
 [![Code style: Ruff](https://img.shields.io/badge/code%20formatting-ruff-f5a623.svg?style=for-the-badge)](https://github.com/astral-sh/ruff)
 [![Logging: Loguru](https://img.shields.io/badge/logging-loguru-4ecdc4.svg?style=for-the-badge)](https://github.com/Delgan/loguru)
 
-Free Claude Code routes Anthropic Messages API traffic from Claude Code to NVIDIA NIM, OpenRouter, DeepSeek, MiniMax, LM Studio, llama.cpp, or Ollama. It keeps Claude Code's client-side protocol stable while letting you choose free, paid, or local models.
+Free Claude Code routes Anthropic Messages API traffic from Claude Code to NVIDIA NIM, Kimi, OpenRouter, DeepSeek, MiniMax, LM Studio, llama.cpp, or Ollama. It keeps Claude Code's client-side protocol stable while letting you choose free, paid, or local models.
 
 [English](README.md) · [中文](README.zh-CN.md)
 
@@ -24,11 +24,24 @@ Free Claude Code routes Anthropic Messages API traffic from Claude Code to NVIDI
   <img src="pic.png" alt="Free Claude Code in action" width="700">
 </div>
 
+## Star History
+
+<div align="center">
+  <a href="https://star-history.com/#Alishahryar1/free-claude-code&Date">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Alishahryar1/free-claude-code&type=Date&theme=dark">
+      <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Alishahryar1/free-claude-code&type=Date">
+      <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Alishahryar1/free-claude-code&type=Date" width="700">
+    </picture>
+  </a>
+</div>
+
 ## What You Get
 
 - Drop-in proxy for Claude Code's Anthropic API calls.
-- Seven provider backends: NVIDIA NIM, OpenRouter, DeepSeek, MiniMax, LM Studio, llama.cpp, and Ollama.
+- Eight provider backends: NVIDIA NIM, Kimi, OpenRouter, DeepSeek, MiniMax, LM Studio, llama.cpp, and Ollama.
 - Per-model routing: send Opus, Sonnet, Haiku, and fallback traffic to different providers.
+- Native Claude Code `/model` picker support through the proxy's `/v1/models` endpoint (Claude Code must opt in to Gateway model discovery; see [Model Picker](#model-picker)).
 - Streaming, tool use, reasoning/thinking block handling, and local request optimizations.
 - Optional Discord or Telegram bot wrapper for remote coding sessions.
 - Optional voice-note transcription through local Whisper or NVIDIA NIM.
@@ -63,12 +76,6 @@ cd free-claude-code
 cp .env.example .env
 ```
 
-PowerShell uses:
-
-```powershell
-Copy-Item .env.example .env
-```
-
 Edit `.env` and choose one provider. For the default NVIDIA NIM path:
 
 ```dotenv
@@ -97,18 +104,18 @@ free-claude-code
 
 ### 4. Run Claude Code
 
-Point `ANTHROPIC_BASE_URL` at the proxy root. Do not append `/v1`.
+Point `ANTHROPIC_BASE_URL` at the proxy root. Do not append `/v1`. Set `CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY=1` if you use `/model` to list models from this proxy (see [Model Picker](#model-picker)).
 
 PowerShell:
 
 ```powershell
-$env:ANTHROPIC_AUTH_TOKEN="freecc"; $env:ANTHROPIC_BASE_URL="http://localhost:8082"; claude
+$env:ANTHROPIC_AUTH_TOKEN="freecc"; $env:ANTHROPIC_BASE_URL="http://localhost:8082"; $env:CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY="1"; claude
 ```
 
 Bash:
 
 ```bash
-ANTHROPIC_AUTH_TOKEN="freecc" ANTHROPIC_BASE_URL="http://localhost:8082" claude
+ANTHROPIC_AUTH_TOKEN="freecc" ANTHROPIC_BASE_URL="http://localhost:8082" CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY=1 claude
 ```
 
 ## Choose A Provider
@@ -123,16 +130,18 @@ provider_id/model/name
 
 | Provider | Prefix | Transport | Key | Default base URL |
 | --- | --- | --- | --- | --- |
-| NVIDIA NIM | `nvidia_nim/...` | OpenAI chat translation | `NVIDIA_NIM_API_KEY` | `https://integrate.api.nvidia.com/v1` |
-| OpenRouter | `open_router/...` | Anthropic Messages | `OPENROUTER_API_KEY` | `https://openrouter.ai/api/v1` |
-| DeepSeek | `deepseek/...` | Anthropic Messages | `DEEPSEEK_API_KEY` | `https://api.deepseek.com/anthropic` |
+| <img src="https://cdn.simpleicons.org/nvidia/76B900" alt="" width="18" height="18"> NVIDIA NIM | `nvidia_nim/...` | OpenAI chat translation | `NVIDIA_NIM_API_KEY` | `https://integrate.api.nvidia.com/v1` |
+| <img src="https://raw.githubusercontent.com/lobehub/lobe-icons/refs/heads/master/packages/static-avatar/avatars/kimi.webp" alt="" width="18" height="18"> Kimi | `kimi/...` | OpenAI chat translation | `KIMI_API_KEY` | `https://api.moonshot.ai/v1` |
+| <img src="https://cdn.simpleicons.org/openrouter/6C47FF" alt="" width="18" height="18"> OpenRouter | `open_router/...` | Anthropic Messages | `OPENROUTER_API_KEY` | `https://openrouter.ai/api/v1` |
+| <img src="https://cdn.simpleicons.org/deepseek/4D6BFF" alt="" width="18" height="18"> DeepSeek | `deepseek/...` | Anthropic Messages | `DEEPSEEK_API_KEY` | `https://api.deepseek.com/anthropic` |
 | MiniMax | `minimax/...` | OpenAI-compatible chat | `MINIMAX_API_KEY` | `https://api.minimax.chat/v1` |
-| LM Studio | `lmstudio/...` | Anthropic Messages | none | `http://localhost:1234/v1` |
-| llama.cpp | `llamacpp/...` | Anthropic Messages | none | `http://localhost:8080/v1` |
-| Ollama | `ollama/...` | Anthropic Messages | none | `http://localhost:11434` |
+| <img src="https://github.com/lmstudio-ai.png?size=64" alt="" width="18" height="18"> LM Studio | `lmstudio/...` | Anthropic Messages | none | `http://localhost:1234/v1` |
+| <img src="https://github.com/ggml-org.png?size=64" alt="" width="18" height="18"> llama.cpp | `llamacpp/...` | Anthropic Messages | none | `http://localhost:8080/v1` |
+| <img src="https://github.com/ollama.png?size=64" alt="" width="18" height="18"> Ollama | `ollama/...` | Anthropic Messages | none | `http://localhost:11434` |
+
 
 <details>
-<summary><b>NVIDIA NIM</b></summary>
+<summary><img src="https://cdn.simpleicons.org/nvidia/76B900" alt="" width="18" height="18"> <b>NVIDIA NIM</b></summary>
 
 Get a key at [build.nvidia.com/settings/api-keys](https://build.nvidia.com/settings/api-keys).
 
@@ -153,7 +162,7 @@ Browse models at [build.nvidia.com](https://build.nvidia.com/explore/discover).
 </details>
 
 <details>
-<summary><b>OpenRouter</b></summary>
+<summary><img src="https://cdn.simpleicons.org/openrouter/6C47FF" alt="" width="18" height="18"> <b>OpenRouter</b></summary>
 
 Get a key at [openrouter.ai/keys](https://openrouter.ai/keys).
 
@@ -167,7 +176,7 @@ Browse [all models](https://openrouter.ai/models) or [free models](https://openr
 </details>
 
 <details>
-<summary><b>DeepSeek</b></summary>
+<summary><img src="https://cdn.simpleicons.org/deepseek/4D6BFF" alt="" width="18" height="18"> <b>DeepSeek</b></summary>
 
 Get a key at [platform.deepseek.com/api_keys](https://platform.deepseek.com/api_keys).
 
@@ -196,7 +205,7 @@ This provider uses MiniMax's OpenAI-compatible endpoint through the shared OpenA
 </details>
 
 <details>
-<summary><b>LM Studio</b></summary>
+<summary><img src="https://github.com/lmstudio-ai.png?size=64" alt="" width="18" height="18"> <b>LM Studio</b></summary>
 
 Start LM Studio's local server, load a model, then configure:
 
@@ -210,7 +219,7 @@ Use the model identifier shown by LM Studio. Prefer models with tool-use support
 </details>
 
 <details>
-<summary><b>llama.cpp</b></summary>
+<summary><img src="https://github.com/ggml-org.png?size=64" alt="" width="18" height="18"> <b>llama.cpp</b></summary>
 
 Start `llama-server` with an Anthropic-compatible `/v1/messages` endpoint and enough context for Claude Code requests.
 
@@ -224,7 +233,7 @@ For local coding models, context size matters. If llama.cpp returns HTTP 400 for
 </details>
 
 <details>
-<summary><b>Ollama</b></summary>
+<summary><img src="https://github.com/ollama.png?size=64" alt="" width="18" height="18"> <b>Ollama</b></summary>
 
 Run Ollama and pull a model:
 
@@ -266,7 +275,7 @@ MODEL="nvidia_nim/z-ai/glm4.7"
 ### Claude Code CLI
 
 ```bash
-ANTHROPIC_AUTH_TOKEN="freecc" ANTHROPIC_BASE_URL="http://localhost:8082" claude
+ANTHROPIC_AUTH_TOKEN="freecc" ANTHROPIC_BASE_URL="http://localhost:8082" CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY=1 claude
 ```
 
 ### VS Code Extension
@@ -276,7 +285,8 @@ Open Settings, search for `claude-code.environmentVariables`, choose **Edit in s
 ```json
 "claudeCode.environmentVariables": [
   { "name": "ANTHROPIC_BASE_URL", "value": "http://localhost:8082" },
-  { "name": "ANTHROPIC_AUTH_TOKEN", "value": "freecc" }
+  { "name": "ANTHROPIC_AUTH_TOKEN", "value": "freecc" },
+  { "name": "CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY", "value": "1" }
 ]
 ```
 
@@ -294,7 +304,8 @@ Set the environment for `acp.registry.claude-acp`:
 ```json
 "env": {
   "ANTHROPIC_BASE_URL": "http://localhost:8082",
-  "ANTHROPIC_AUTH_TOKEN": "freecc"
+  "ANTHROPIC_AUTH_TOKEN": "freecc",
+  "CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY": "1"
 }
 ```
 
@@ -302,19 +313,17 @@ Restart the IDE after changing the file.
 
 ### Model Picker
 
-`claude-pick` lets you choose a model at launch time.
+Claude Code 2.1.126 or later can populate `/model` from this proxy's Gateway `/v1/models` response when `ANTHROPIC_BASE_URL` points here. In **2.1.126–2.1.128** that discovery was automatic; **newer releases** require **`CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY=1`** in the same environment as `ANTHROPIC_*`. Omit the flag if you only set models via proxy config and never use `/model` discovery.
 
-```bash
-brew install fzf
-alias claude-pick="/absolute/path/to/free-claude-code/claude-pick"
-claude-pick
-```
+Start Claude Code with that variable set (see [Quick Start](#4-run-claude-code)), run `/model`, and choose any discovered provider model.
 
-You can also create fixed aliases:
+<div align="center">
+  <img src="cc-model-picker.png" alt="Claude Code model picker showing gateway models" width="700">
+</div>
 
-```bash
-alias claude-kimi='ANTHROPIC_BASE_URL="http://localhost:8082" ANTHROPIC_AUTH_TOKEN="freecc:moonshotai/kimi-k2.5" claude'
-```
+The proxy lists models for configured provider keys and referenced local providers. Picker-safe IDs are routed back to the real provider/model automatically, so no `.env` edit or separate launcher script is needed after startup.
+
+Each provider model also has a `(no thinking)` picker variant. Use it when a model does not support Claude Code thinking or fails with adaptive-thinking requests. It routes to the same upstream model while asking Claude Code to send a non-thinking request.
 
 ## Optional Integrations
 
