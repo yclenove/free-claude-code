@@ -1,3 +1,8 @@
+## 2026-05-13
+- Summary: 将上游 `Alishahryar1/free-claude-code` 的 `main` 合并入 fork，保留 MiniMax 与中文 `.env.example` 说明，并接入 Kimi、Wafer、OpenCode Zen；OpenRouter free CLI 默认模型改为带 `open_router/` 前缀以避免与 `minimax` provider 前缀歧义。
+- Affected: `.env.example`, `README.md`, `config/provider_catalog.py`, `config/settings.py`, `providers/registry.py`, `api/admin_config.py`, `smoke/lib/config.py`, `smoke/README.md`, `tests/config/test_config.py`, `tests/contracts/test_smoke_config.py`, `tests/providers/test_registry.py`, `CHANGELOG.md`
+- Impact: 与上游功能对齐且保留 fork 独有 provider；smoke/OpenRouter 矩阵与 Admin 配置字段同步；全量 `uv run pytest` 通过。
+
 ## 2026-04-28
 - Summary: 完成项目核心文档双语化，新增中文文档并在主 README 增加中英文入口。
 - Affected: `README.md`, `README.zh-CN.md`, `PLAN.zh-CN.md`, `smoke/README.zh-CN.md`, `AGENTS.zh-CN.md`, `CLAUDE.zh-CN.md`

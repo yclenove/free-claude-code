@@ -7,6 +7,7 @@ from typing import Any
 from pydantic import BaseModel
 
 from config.constants import HTTP_CONNECT_TIMEOUT_DEFAULT
+from providers.model_listing import ProviderModelInfo, model_infos_from_ids
 
 
 class ProviderConfig(BaseModel):
@@ -79,26 +80,43 @@ class BaseProvider(ABC):
         build(request, thinking_enabled=thinking_enabled)
 
     def _log_stream_transport_error(
-        self, tag: str, req_tag: str, error: Exception
+        self,
+        tag: str,
+        req_tag: str,
+        error: Exception,
+        *,
+        request_id: str | None = None,
     ) -> None:
         """Log streaming transport failures (metadata-only unless verbose is enabled)."""
         from loguru import logger
+
+        from core.trace import trace_event
+
+        response = getattr(error, "response", None)
+        http_status = (
+            getattr(response, "status_code", None) if response is not None else None
+        )
+        trace_event(
+            stage="provider",
+            event="provider.response.transport_error",
+            source="provider",
+            provider=tag,
+            request_id=request_id,
+            exc_type=type(error).__name__,
+            http_status=http_status,
+        )
 
         if self._config.log_api_error_tracebacks:
             logger.error(
                 "{}_ERROR:{} {}: {}", tag, req_tag, type(error).__name__, error
             )
             return
-        response = getattr(error, "response", None)
-        status_code = (
-            getattr(response, "status_code", None) if response is not None else None
-        )
         logger.error(
             "{}_ERROR:{} exc_type={} http_status={}",
             tag,
             req_tag,
             type(error).__name__,
-            status_code,
+            http_status,
         )
 
     @abstractmethod
@@ -108,6 +126,10 @@ class BaseProvider(ABC):
     @abstractmethod
     async def list_model_ids(self) -> frozenset[str]:
         """Return the model ids currently advertised by this provider."""
+
+    async def list_model_infos(self) -> frozenset[ProviderModelInfo]:
+        """Return advertised model ids with optional provider capability metadata."""
+        return model_infos_from_ids(await self.list_model_ids())
 
     @abstractmethod
     async def stream_response(

@@ -8,17 +8,20 @@ from config.nim import NimSettings
 from config.provider_ids import SUPPORTED_PROVIDER_IDS
 from providers.deepseek import DeepSeekProvider
 from providers.exceptions import UnknownProviderTypeError
+from providers.kimi import KimiProvider
 from providers.llamacpp import LlamaCppProvider
 from providers.lmstudio import LMStudioProvider
 from providers.minimax import MiniMaxProvider
 from providers.nvidia_nim import NvidiaNimProvider
 from providers.ollama import OllamaProvider
 from providers.open_router import OpenRouterProvider
+from providers.opencode import OpenCodeProvider
 from providers.registry import (
     PROVIDER_DESCRIPTORS,
     ProviderRegistry,
     create_provider,
 )
+from providers.wafer import WaferProvider
 
 
 def _make_settings(**overrides):
@@ -30,6 +33,9 @@ def _make_settings(**overrides):
     mock.deepseek_api_key = "test_deepseek_key"
     mock.minimax_api_key = "test_minimax_key"
     mock.minimax_base_url = "https://api.minimax.chat/v1"
+    mock.kimi_api_key = "test_kimi_key"
+    mock.wafer_api_key = "test_wafer_key"
+    mock.opencode_api_key = "test_opencode_key"
     mock.lm_studio_base_url = "http://localhost:1234/v1"
     mock.llamacpp_base_url = "http://localhost:8080/v1"
     mock.ollama_base_url = "http://localhost:11434"
@@ -38,6 +44,9 @@ def _make_settings(**overrides):
     mock.minimax_proxy = ""
     mock.lmstudio_proxy = ""
     mock.llamacpp_proxy = ""
+    mock.kimi_proxy = ""
+    mock.wafer_proxy = ""
+    mock.opencode_proxy = ""
     mock.provider_rate_limit = 40
     mock.provider_rate_window = 60
     mock.provider_max_concurrency = 5
@@ -99,6 +108,9 @@ def test_create_provider_instantiates_each_builtin():
         "lmstudio": LMStudioProvider,
         "llamacpp": LlamaCppProvider,
         "ollama": OllamaProvider,
+        "kimi": KimiProvider,
+        "wafer": WaferProvider,
+        "opencode": OpenCodeProvider,
     }
 
     with (
