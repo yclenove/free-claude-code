@@ -68,16 +68,22 @@ def _create_ollama(config: ProviderConfig, _settings: Settings) -> BaseProvider:
     return OllamaProvider(config)
 
 
+def _create_kimi(config: ProviderConfig, _settings: Settings) -> BaseProvider:
+    from providers.kimi import KimiProvider
+
+    return KimiProvider(config)
+
+
 def _create_minimax(config: ProviderConfig, _settings: Settings) -> BaseProvider:
     from providers.minimax import MiniMaxProvider
 
     return MiniMaxProvider(config)
 
 
-def _create_kimi(config: ProviderConfig, _settings: Settings) -> BaseProvider:
-    from providers.kimi import KimiProvider
+def _create_xiaomimimo(config: ProviderConfig, _settings: Settings) -> BaseProvider:
+    from providers.xiaomimimo import XiaomiMiMoProvider
 
-    return KimiProvider(config)
+    return XiaomiMiMoProvider(config)
 
 
 def _create_wafer(config: ProviderConfig, _settings: Settings) -> BaseProvider:
@@ -99,8 +105,9 @@ PROVIDER_FACTORIES: dict[str, ProviderFactory] = {
     "lmstudio": _create_lmstudio,
     "llamacpp": _create_llamacpp,
     "ollama": _create_ollama,
-    "minimax": _create_minimax,
     "kimi": _create_kimi,
+    "minimax": _create_minimax,
+    "xiaomimimo": _create_xiaomimimo,
     "wafer": _create_wafer,
     "opencode": _create_opencode,
 }

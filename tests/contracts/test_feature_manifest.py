@@ -6,6 +6,7 @@ from pathlib import Path
 from messaging.platforms.factory import create_messaging_platform
 from providers.base import BaseProvider
 from providers.deepseek import DeepSeekProvider
+from providers.kimi import KimiProvider
 from providers.llamacpp import LlamaCppProvider
 from providers.lmstudio import LMStudioProvider
 from providers.minimax import MiniMaxProvider
@@ -14,6 +15,7 @@ from providers.ollama import OllamaProvider
 from providers.open_router import OpenRouterProvider
 from providers.opencode import OpenCodeProvider
 from providers.wafer import WaferProvider
+from providers.xiaomimimo import XiaomiMiMoProvider
 from smoke.features import FEATURE_INVENTORY, README_FEATURES, feature_ids
 
 VALID_SOURCE = {"readme", "public_surface"}
@@ -73,7 +75,9 @@ def test_provider_and_platform_registries_include_advertised_builtins() -> None:
         "nvidia_nim": NvidiaNimProvider,
         "open_router": OpenRouterProvider,
         "deepseek": DeepSeekProvider,
+        "kimi": KimiProvider,
         "minimax": MiniMaxProvider,
+        "xiaomimimo": XiaomiMiMoProvider,
         "lmstudio": LMStudioProvider,
         "llamacpp": LlamaCppProvider,
         "ollama": OllamaProvider,

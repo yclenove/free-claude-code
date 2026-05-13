@@ -22,6 +22,7 @@ from providers.registry import (
     create_provider,
 )
 from providers.wafer import WaferProvider
+from providers.xiaomimimo import XiaomiMiMoProvider
 
 
 def _make_settings(**overrides):
@@ -31,9 +32,11 @@ def _make_settings(**overrides):
     mock.nvidia_nim_api_key = "test_key"
     mock.open_router_api_key = "test_openrouter_key"
     mock.deepseek_api_key = "test_deepseek_key"
+    mock.kimi_api_key = "test_kimi_key"
+    mock.xiaomi_mimo_api_key = "test_xiaomi_mimo_key"
+    mock.xiaomi_mimo_base_url = "https://token-plan-cn.xiaomimimo.com/v1"
     mock.minimax_api_key = "test_minimax_key"
     mock.minimax_base_url = "https://api.minimax.chat/v1"
-    mock.kimi_api_key = "test_kimi_key"
     mock.wafer_api_key = "test_wafer_key"
     mock.opencode_api_key = "test_opencode_key"
     mock.lm_studio_base_url = "http://localhost:1234/v1"
@@ -41,10 +44,11 @@ def _make_settings(**overrides):
     mock.ollama_base_url = "http://localhost:11434"
     mock.nvidia_nim_proxy = ""
     mock.open_router_proxy = ""
+    mock.kimi_proxy = ""
+    mock.xiaomi_mimo_proxy = ""
     mock.minimax_proxy = ""
     mock.lmstudio_proxy = ""
     mock.llamacpp_proxy = ""
-    mock.kimi_proxy = ""
     mock.wafer_proxy = ""
     mock.opencode_proxy = ""
     mock.provider_rate_limit = 40
@@ -104,11 +108,12 @@ def test_create_provider_instantiates_each_builtin():
     cases = {
         "nvidia_nim": NvidiaNimProvider,
         "deepseek": DeepSeekProvider,
+        "kimi": KimiProvider,
         "minimax": MiniMaxProvider,
+        "xiaomimimo": XiaomiMiMoProvider,
         "lmstudio": LMStudioProvider,
         "llamacpp": LlamaCppProvider,
         "ollama": OllamaProvider,
-        "kimi": KimiProvider,
         "wafer": WaferProvider,
         "opencode": OpenCodeProvider,
     }

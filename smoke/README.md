@@ -120,7 +120,7 @@ uv run pytest smoke/product -n 0 -s --tb=short
 - `FCC_SMOKE_MODEL_NVIDIA_NIM`, `FCC_SMOKE_MODEL_OPEN_ROUTER`,
   `FCC_SMOKE_MODEL_DEEPSEEK`, `FCC_SMOKE_MODEL_MINIMAX`, `FCC_SMOKE_MODEL_LMSTUDIO`,
   `FCC_SMOKE_MODEL_LLAMACPP`, `FCC_SMOKE_MODEL_OLLAMA`, `FCC_SMOKE_MODEL_KIMI`,
-  `FCC_SMOKE_MODEL_WAFER`, `FCC_SMOKE_MODEL_OPENCODE`: optional per-provider
+  `FCC_SMOKE_MODEL_XIAOMIMIMO`, `FCC_SMOKE_MODEL_WAFER`, `FCC_SMOKE_MODEL_OPENCODE`: optional per-provider
   smoke model overrides. Values may include the provider prefix or just the model
   name for that provider.
 - `FCC_SMOKE_NIM_MODELS`: optional comma-separated NVIDIA NIM CLI matrix models

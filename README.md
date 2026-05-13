@@ -12,7 +12,7 @@ Use Claude Code CLI, VS Code, JetBrains ACP, or chat bots through your own Anthr
 [![Code style: Ruff](https://img.shields.io/badge/code%20formatting-ruff-f5a623.svg?style=for-the-badge)](https://github.com/astral-sh/ruff)
 [![Logging: Loguru](https://img.shields.io/badge/logging-loguru-4ecdc4.svg?style=for-the-badge)](https://github.com/Delgan/loguru)
 
-Free Claude Code routes Anthropic Messages API traffic from Claude Code to NVIDIA NIM, Kimi, Wafer, OpenRouter, DeepSeek, MiniMax, LM Studio, llama.cpp, Ollama, and OpenCode Zen. It keeps Claude Code's client-side protocol stable while letting you choose free, paid, or local models.
+Free Claude Code routes Anthropic Messages API traffic from Claude Code to NVIDIA NIM, Kimi, Wafer, OpenRouter, DeepSeek, MiniMax, Xiaomi MiMo, LM Studio, llama.cpp, Ollama, and OpenCode Zen. It keeps Claude Code's client-side protocol stable while letting you choose free, paid, or local models.
 
 [English](README.md) · [中文](README.zh-CN.md)
 
@@ -39,7 +39,7 @@ Free Claude Code routes Anthropic Messages API traffic from Claude Code to NVIDI
 ## What You Get
 
 - Drop-in proxy for Claude Code's Anthropic API calls.
-- Ten provider backends: NVIDIA NIM, Kimi, Wafer, OpenRouter, DeepSeek, MiniMax, LM Studio, llama.cpp, Ollama, and OpenCode Zen.
+- Eleven provider backends: NVIDIA NIM, Kimi, Wafer, OpenRouter, DeepSeek, MiniMax, Xiaomi MiMo, LM Studio, llama.cpp, Ollama, and OpenCode Zen.
 - Per-model routing: send Opus, Sonnet, Haiku, and fallback traffic to different providers.
 - Native Claude Code `/model` picker support through the proxy's `/v1/models` endpoint (Claude Code must opt in to Gateway model discovery; see [Model Picker](#model-picker)).
 - Streaming, tool use, reasoning/thinking block handling, and local request optimizations.
@@ -189,13 +189,25 @@ Get an API key from the MiniMax Open Platform, then configure `MINIMAX_API_KEY` 
 
 This provider uses MiniMax's OpenAI-compatible endpoint through the shared OpenAI chat transport.
 
-### 7. [LM Studio](https://lmstudio.ai/)
+### 7. [Xiaomi MiMo](https://platform.xiaomimimo.com/)
+
+See the Xiaomi MiMo platform for API keys. Configure `MODEL` as `xiaomimimo/<model_id>`; the segment after `xiaomimimo/` is sent to MiMo as the OpenAI `model` field.
+
+Token / Coding Plan (China) OpenAI-compatible base URL: `https://token-plan-cn.xiaomimimo.com/v1`. Other billing plans may use `https://api.xiaomimimo.com/v1` instead (override with `XIAOMI_MIMO_BASE_URL`).
+
+```dotenv
+XIAOMI_MIMO_API_KEY="your-mimo-key"
+XIAOMI_MIMO_BASE_URL="https://token-plan-cn.xiaomimimo.com/v1"
+MODEL="xiaomimimo/mimo-v2.5"
+```
+
+### 8. [LM Studio](https://lmstudio.ai/)
 
 Start LM Studio's local server and load a model. In the Admin UI, keep or update `LM_STUDIO_BASE_URL`, then set `MODEL` to the model identifier shown by LM Studio, prefixed with `lmstudio/`.
 
 Prefer models with tool-use support for Claude Code workflows.
 
-### 8. [llama.cpp](https://github.com/ggml-org/llama.cpp)
+### 9. [llama.cpp](https://github.com/ggml-org/llama.cpp)
 
 Start `llama-server` with an Anthropic-compatible `/v1/messages` endpoint and enough context for Claude Code requests.
 
@@ -203,7 +215,7 @@ In the Admin UI, keep or update `LLAMACPP_BASE_URL`, then set `MODEL` to the loc
 
 For local coding models, context size matters. If llama.cpp returns HTTP 400 for normal Claude Code requests, increase `--ctx-size` and verify the model/server build supports the requested features.
 
-### 9. [Ollama](https://ollama.com/)
+### 10. [Ollama](https://ollama.com/)
 
 Run Ollama and pull a model:
 
@@ -216,7 +228,7 @@ In the Admin UI, keep or update `OLLAMA_BASE_URL`, then set `MODEL` to the same 
 
 `OLLAMA_BASE_URL` is the Ollama server root; do not append `/v1`. Example model slugs include `ollama/llama3.1` and `ollama/llama3.1:8b`.
 
-### 10. [OpenCode Zen](https://opencode.ai/)
+### 11. [OpenCode Zen](https://opencode.ai/)
 
 Get an API key at [opencode.ai/auth](https://opencode.ai/auth).
 
@@ -235,7 +247,7 @@ Popular examples:
 
 Browse available models at [opencode.ai](https://opencode.ai).
 
-### 11. Mix Providers By Model Tier
+### 12. Mix Providers By Model Tier
 
 Each model tier can use a different provider by setting `MODEL_OPUS`, `MODEL_SONNET`, and `MODEL_HAIKU` in the Admin UI. Leave a tier blank to inherit `MODEL`.
 
@@ -393,6 +405,8 @@ DEEPSEEK_API_KEY=""
 MINIMAX_API_KEY=""
 MINIMAX_BASE_URL="https://api.minimax.chat/v1"
 KIMI_API_KEY=""
+XIAOMI_MIMO_API_KEY=""
+XIAOMI_MIMO_BASE_URL="https://token-plan-cn.xiaomimimo.com/v1"
 WAFER_API_KEY=""
 OPENCODE_API_KEY=""
 LM_STUDIO_BASE_URL="http://localhost:1234/v1"
@@ -409,6 +423,7 @@ MINIMAX_PROXY=""
 LMSTUDIO_PROXY=""
 LLAMACPP_PROXY=""
 KIMI_PROXY=""
+XIAOMI_MIMO_PROXY=""
 WAFER_PROXY=""
 OPENCODE_PROXY=""
 ```

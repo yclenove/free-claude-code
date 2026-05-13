@@ -25,6 +25,9 @@ LLAMACPP_DEFAULT_BASE = "http://localhost:8080/v1"
 OLLAMA_DEFAULT_BASE = "http://localhost:11434"
 MINIMAX_DEFAULT_BASE = "https://api.minimax.chat/v1"
 OPENCODE_DEFAULT_BASE = "https://opencode.ai/zen/v1"
+# OpenAI-compatible chat base. Token / Coding Plan (CN) uses token-plan-cn; pay-as-you-go
+# platform may use https://api.xiaomimimo.com/v1 — override with XIAOMI_MIMO_BASE_URL if needed.
+XIAOMI_MIMO_DEFAULT_BASE = "https://token-plan-cn.xiaomimimo.com/v1"
 
 
 @dataclass(frozen=True, slots=True)
@@ -106,6 +109,16 @@ PROVIDER_CATALOG: dict[str, ProviderDescriptor] = {
             "local",
         ),
     ),
+    "kimi": ProviderDescriptor(
+        provider_id="kimi",
+        transport_type="openai_chat",
+        credential_env="KIMI_API_KEY",
+        credential_url="https://platform.moonshot.cn/console/api-keys",
+        credential_attr="kimi_api_key",
+        default_base_url=KIMI_DEFAULT_BASE,
+        proxy_attr="kimi_proxy",
+        capabilities=("chat", "streaming", "tools"),
+    ),
     "minimax": ProviderDescriptor(
         provider_id="minimax",
         transport_type="openai_chat",
@@ -117,14 +130,15 @@ PROVIDER_CATALOG: dict[str, ProviderDescriptor] = {
         proxy_attr="minimax_proxy",
         capabilities=("chat", "streaming", "tools", "thinking", "rate_limit"),
     ),
-    "kimi": ProviderDescriptor(
-        provider_id="kimi",
+    "xiaomimimo": ProviderDescriptor(
+        provider_id="xiaomimimo",
         transport_type="openai_chat",
-        credential_env="KIMI_API_KEY",
-        credential_url="https://platform.moonshot.cn/console/api-keys",
-        credential_attr="kimi_api_key",
-        default_base_url=KIMI_DEFAULT_BASE,
-        proxy_attr="kimi_proxy",
+        credential_env="XIAOMI_MIMO_API_KEY",
+        credential_url="https://platform.xiaomimimo.com/",
+        credential_attr="xiaomi_mimo_api_key",
+        default_base_url=XIAOMI_MIMO_DEFAULT_BASE,
+        base_url_attr="xiaomi_mimo_base_url",
+        proxy_attr="xiaomi_mimo_proxy",
         capabilities=("chat", "streaming", "tools"),
     ),
     "wafer": ProviderDescriptor(

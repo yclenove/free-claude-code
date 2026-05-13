@@ -712,6 +712,12 @@ FIELDS: tuple[ConfigFieldSpec, ...] = (
         advanced=True,
     ),
     ConfigFieldSpec(
+        "FCC_SMOKE_MODEL_XIAOMIMIMO",
+        "Smoke Xiaomi MiMo Model",
+        "smoke",
+        advanced=True,
+    ),
+    ConfigFieldSpec(
         "FCC_SMOKE_MODEL_WAFER",
         "Smoke Wafer Model",
         "smoke",

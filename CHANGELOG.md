@@ -1,4 +1,9 @@
 ## 2026-05-13
+- Summary: 合并远端 fork `origin/main`（含 Xiaomi MiMo provider）到已同步上游的本地 `main`，统一 provider 目录、runtime 启动校验与 smoke 默认值；`AppRuntime.startup` 对 `fcc_skip_startup_model_validation` 使用 `getattr` 以兼容测试用 `SimpleNamespace`。
+- Affected: `config/provider_catalog.py`, `providers/registry.py`, `providers/defaults.py`, `config/settings.py`, `api/runtime.py`, `.env.example`, `README.md`, `smoke/lib/config.py`, `smoke/README.md`, `api/admin_config.py`, `tests/providers/test_registry.py`, `tests/contracts/test_smoke_config.py`, `tests/config/test_config.py`, `tests/contracts/test_feature_manifest.py`, `CHANGELOG.md`
+- Impact: 单一 `main` 线同时包含上游 Kimi/Wafer/OpenCode 与 fork 的 MiniMax、小米 MiMo；`uv run pytest` 全绿。
+
+## 2026-05-13
 - Summary: 将上游 `Alishahryar1/free-claude-code` 的 `main` 合并入 fork，保留 MiniMax 与中文 `.env.example` 说明，并接入 Kimi、Wafer、OpenCode Zen；OpenRouter free CLI 默认模型改为带 `open_router/` 前缀以避免与 `minimax` provider 前缀歧义。
 - Affected: `.env.example`, `README.md`, `config/provider_catalog.py`, `config/settings.py`, `providers/registry.py`, `api/admin_config.py`, `smoke/lib/config.py`, `smoke/README.md`, `tests/config/test_config.py`, `tests/contracts/test_smoke_config.py`, `tests/providers/test_registry.py`, `CHANGELOG.md`
 - Impact: 与上游功能对齐且保留 fork 独有 provider；smoke/OpenRouter 矩阵与 Admin 配置字段同步；全量 `uv run pytest` 通过。

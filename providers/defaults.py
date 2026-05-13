@@ -12,6 +12,7 @@ from config.provider_catalog import (
     OPENCODE_DEFAULT_BASE,
     OPENROUTER_DEFAULT_BASE,
     WAFER_DEFAULT_BASE,
+    XIAOMI_MIMO_DEFAULT_BASE,
 )
 
 __all__ = (
@@ -26,4 +27,5 @@ __all__ = (
     "OPENCODE_DEFAULT_BASE",
     "OPENROUTER_DEFAULT_BASE",
     "WAFER_DEFAULT_BASE",
+    "XIAOMI_MIMO_DEFAULT_BASE",
 )
