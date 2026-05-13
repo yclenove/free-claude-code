@@ -12,3 +12,6 @@ debug-*.log
 .coverage
 llama_cache
 .smoke-results
+.specstory
+.vscode
+code-audit-report.md

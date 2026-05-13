@@ -1,4 +1,9 @@
 ## 2026-05-13
+- Summary: 补充仓库忽略规则，排除会话痕迹目录、IDE 本地配置与审计草稿文件，避免误提交到远端。
+- Affected: `.gitignore`, `CHANGELOG.md`
+- Impact: 工作区保持干净状态，后续提交与同步不会携带本地临时文件。
+
+## 2026-05-13
 - Summary: 合并远端 fork `origin/main`（含 Xiaomi MiMo provider）到已同步上游的本地 `main`，统一 provider 目录、runtime 启动校验与 smoke 默认值；`AppRuntime.startup` 对 `fcc_skip_startup_model_validation` 使用 `getattr` 以兼容测试用 `SimpleNamespace`。
 - Affected: `config/provider_catalog.py`, `providers/registry.py`, `providers/defaults.py`, `config/settings.py`, `api/runtime.py`, `.env.example`, `README.md`, `smoke/lib/config.py`, `smoke/README.md`, `api/admin_config.py`, `tests/providers/test_registry.py`, `tests/contracts/test_smoke_config.py`, `tests/config/test_config.py`, `tests/contracts/test_feature_manifest.py`, `CHANGELOG.md`
 - Impact: 单一 `main` 线同时包含上游 Kimi/Wafer/OpenCode 与 fork 的 MiniMax、小米 MiMo；`uv run pytest` 全绿。
